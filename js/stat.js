@@ -68,7 +68,8 @@ window.renderStatistics = (function () {
     var histoX = 140;
     var startColumn = 250;
     var widthColumn = 40;
-    var columnIndent = widthColumn + 50;
+    var stepBetweenColumn = 50;
+    var columnIndent = widthColumn + stepBetweenColumn;
     var step = histoHeight / getMaxOfArray(arrTimes);
     var currentColor;
 
