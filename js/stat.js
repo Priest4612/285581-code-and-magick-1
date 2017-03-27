@@ -1,4 +1,5 @@
 'use strict';
+
 window.renderStatistics = (function () {
   var cloudX = 100;
   var cloudY = 10;
@@ -10,6 +11,10 @@ window.renderStatistics = (function () {
   var defaultFontSize = 18;
   var headerFontSize = 24;
   var defaultColor = '#000000';
+  var borderCluoudColor = 'blue';
+  var borderCloudWeight = 5;
+  var shadowCloudColor = 'rgba(0, 0, 0, 0.7)';
+  var cloudColor = 'rgba(256, 256, 256, 1.0)';
 
 
   var getMaxOfArray = function (numArray) {
@@ -33,13 +38,13 @@ window.renderStatistics = (function () {
     ctx.closePath();
 
     if (action) {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+      ctx.fillStyle = shadowCloudColor;
       ctx.fill();
     } else {
-      ctx.fillStyle = 'rgba(256, 256, 256, 1.0)';
+      ctx.fillStyle = cloudColor;
       ctx.fill();
-      ctx.strokeStyle = 'blue';
-      ctx.lineWidth = 5;
+      ctx.strokeStyle = borderCluoudColor;
+      ctx.lineWidth = borderCloudWeight;
       ctx.stroke();
     }
   };
@@ -58,7 +63,7 @@ window.renderStatistics = (function () {
   };
 
 
-  var randomColor = function () {
+  var setRandomColor = function () {
     return ['rgba(0, 0, ', (Math.random() * 255).toFixed(0), ', ', (0.5 + Math.random() * (1 - 0.5)).toFixed(1), ')'].join('');
   };
 
@@ -67,24 +72,25 @@ window.renderStatistics = (function () {
     var histoHeight = 150;
     var histoX = 140;
     var startColumn = 250;
+    var nameY = startColumn + 20;
     var widthColumn = 40;
     var stepBetweenColumn = 50;
     var columnIndent = widthColumn + stepBetweenColumn;
     var step = histoHeight / getMaxOfArray(arrTimes);
     var currentColor;
+    var yourColor = 'rgba(255, 0, 0, 1)';
 
     for (var i = 0; i < arrTimes.length; i++) {
       var name = arrNames[i];
       var time = (arrTimes[i]).toFixed(0);
       var height = -(step * time);
-      var indent = histoX + columnIndent * i;
-      var nameY = startColumn + 20;
       var timeY = startColumn + height - 5;
+      var indent = histoX + columnIndent * i;
 
       if (name === 'Вы') {
-        currentColor = 'rgba(255, 0, 0, 1)';
+        currentColor = yourColor;
       } else {
-        currentColor = randomColor();
+        currentColor = setRandomColor();
       }
       drawRect(ctx, indent, startColumn, widthColumn, height, currentColor);
       drawMessage(ctx, name, defaultFontSize, defaultFont, indent, nameY, currentColor);
@@ -92,12 +98,16 @@ window.renderStatistics = (function () {
     }
   };
 
+  var titleX = 210;
+  var titleY = 40;
+  var headerX = 130;
+  var headerY = 65;
 
   return function (ctx, names, times) {
     drawCloud(ctx, cloudX, cloudY, widthCloud, heightCloud, roundoffCloud, offsetCloud, true);
     drawCloud(ctx, cloudX, cloudY, widthCloud, heightCloud, roundoffCloud);
-    drawMessage(ctx, 'Ура вы победили!', headerFontSize, defaultFont, 210, 40);
-    drawMessage(ctx, 'Список результатов:', defaultFontSize, defaultFont, 130, 65);
+    drawMessage(ctx, 'Ура вы победили!', headerFontSize, defaultFont, titleX, titleY);
+    drawMessage(ctx, 'Список результатов:', defaultFontSize, defaultFont, headerX, headerY);
     drawHisto(ctx, names, times);
   };
 })();
