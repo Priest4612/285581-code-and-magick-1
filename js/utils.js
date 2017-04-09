@@ -19,15 +19,13 @@ window.utils = (function () {
 
 
   module.getNextElement = function (array) {
-    console.log('getNextElement');
     var counter = 0;
     return function () {
-      if (counter < array.length) {
+      if (counter < array.length - 1) {
         counter++;
       } else {
         counter = 0;
       }
-      console.log('counter: ' + counter);
       return array[counter];
     };
   };
