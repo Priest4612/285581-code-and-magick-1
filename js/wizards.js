@@ -1,6 +1,7 @@
 'use strict';
 
-window.wizardList = (function () {
+window.wizards = (function () {
+  var module = {};
   var wizardFieldOptions = {
     firstName: [
       'Иван',
@@ -39,8 +40,8 @@ window.wizardList = (function () {
     ]
   };
 
-  var generationSimilarWizard = function (options) {
 
+  var generationSimilarWizard = function (options) {
     var currentFirstName;
     var currentLastName;
     var currentCoatColor;
@@ -66,11 +67,16 @@ window.wizardList = (function () {
     };
   };
 
-  var similarWizardList = [];
-  var teastWizards = generationSimilarWizard(wizardFieldOptions);
-  for (var i = wizardFieldOptions.firstName.length; i--;) {
-    similarWizardList.push(teastWizards());
-  }
 
-  return similarWizardList;
+  module.generateWizardList = function () {
+    var similarWizardList = [];
+    var wizardNames = wizardFieldOptions.firstName;
+    var teastWizards = generationSimilarWizard(wizardFieldOptions);
+    wizardNames.forEach(function () {
+      similarWizardList.push(teastWizards());
+    });
+    return similarWizardList;
+  };
+
+  return module;
 })();
